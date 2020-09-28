@@ -41,9 +41,7 @@ class EditContact extends Component {
     }
     sendNewData(event) {
         event.preventDefault(); //
-        
         this.props.saveContact(this.state)
-
         this.setState({
             isSended: true
         })

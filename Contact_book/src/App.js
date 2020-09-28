@@ -11,53 +11,90 @@ import EditContact from "./Components/EditContact/EditContact";
 class App extends Component {
   state = {
     List: [
-      {
-        id: 1,
-        name: "Andrii Riabii",
-        phone: "+380 (05) 41 66 765",
-        email: "cuanid236316@gmail.com",
-        address: "Soborna 16",
-        gender: "men",
-        avatar: 3,
-        isFavarite: false,
-      },
-      {
-        id: 2,
-        name: "Kate Yaroshik",
-        phone: "+380 (05) 23 11 885",
-        email: "kate@gmail.com",
-        address: "Soborna 35",
-        gender: "women",
-        avatar: 6,
-        isFavarite: false,
-      },
-      {
-        id: 3,
-        name: "Vlad Lemonov",
-        phone: "+380 (15) 11 11 222",
-        email: "vlad@gmail.com",
-        address: "Soborna 35",
-        gender: "men",
-        avatar: 1,
-        isFavarite: false,
-      },
+      // {
+      //   id: 1,
+      //   name: "Andrii Riabii",
+      //   phone: "+380 (05) 41 66 765",
+      //   email: "cuanid236316@gmail.com",
+      //   address: "Soborna 16",
+      //   gender: "men",
+      //   avatar: 3,
+      //   isFavarite: false,
+      // },
+      // {
+      //   id: 2,
+      //   name: "Kate Yaroshik",
+      //   phone: "+380 (05) 23 11 885",
+      //   email: "kate@gmail.com",
+      //   address: "Soborna 35",
+      //   gender: "women",
+      //   avatar: 6,
+      //   isFavarite: false,
+      // },
+      // {
+      //   id: 3,
+      //   name: "Vlad Lemonov",
+      //   phone: "+380 (15) 11 11 222",
+      //   email: "vlad@gmail.com",
+      //   address: "Soborna 35",
+      //   gender: "men",
+      //   avatar: 1,
+      //   isFavarite: false,
+      // },
     ],
     isCheck: false,
     currentContact: null,
   };
 
+  URL = "https://contactbook-9f583.firebaseio.com/list.json"
+
+  getContacts = () => {
+    fetch(this.URL, {method: "GET"})
+    .then(data => {
+      return data.json();
+    })
+    .then(contacts =>{
+      console.log(contacts);
+      this.setState({
+        List:contacts
+      })
+    })
+    .catch(error =>{
+      console.log("Error: ", error);
+    })
+  }
+  componentDidMount(){
+    this.getContacts();
+  }
+
+  saveChanges(listData){
+    fetch(this.URL, {method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(listData)})
+    .then(data => {
+      console.log(data)
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  }
+
   changeFavorite = (id) => {
     const index = this.state.List.findIndex((t) => t.id === id);
     let tempList = this.state.List.slice();
     tempList[index].isFavarite = !tempList[index].isFavarite;
+    this.saveChanges(tempList);
     this.setState({
       List: tempList,
     });
-    console.log(this.state.List);
   };
   editContact = (id) => {
     const index = this.state.List.findIndex((item) => item.id === id);
     const currentContact = this.state.List[index];
+    this.saveChanges(this.state.List);
     this.setState({
       currentContact: currentContact,
     });
@@ -65,6 +102,7 @@ class App extends Component {
   saveContact = (obj) =>{
     const index = this.state.List.findIndex(x => x.id == obj.id);
     this.state.List[index] = obj;
+    this.saveChanges(this.state.List);
   }
   addContact = (name, address, phone, email, avatar) => {
     const newContact = {
@@ -99,11 +137,13 @@ class App extends Component {
       (item) => item.id === id
     );
     this.state.List.splice(indexRemoveElement, 1);
+    this.saveChanges(this.state.List);
 
     this.setState({
       isCheck: true,
     });
   };
+  
 
   render() {
     return (
