@@ -12,13 +12,28 @@ class PeopleItem extends Component {
 	eye_color: this.props.eye_color,
 	birth_year: this.props.birth_year,
 	gender: this.props.gender,
-    homeworld: this.props.homeworld  
+    homeworld: this.props.homeworld,
+    url: this.props.url,
+    id: null
+  }
+
+  setId() {
+    let array = this.state.url.split("/");
+    let _id = array[array.length-2]
+    _id = 'https://starwars-visualguide.com/assets/img/characters/'  + _id + '.jpg';
+    this.setState({
+      id: _id,
+    });
+  }
+  componentDidMount () {
+      this.setId();
+    //   console.log(this.state.id);
   }
     render () {
         return (
             <Fragment>
-                 <div class="card">
-                    <img className="card-img-top" src="" alt="Card image cap" />
+                 <div class="card-3">
+                    <img className="card-img-top" src={this.state.id} alt="Card image cap" />
                     <div className="card-body">
                         <h5 className="card-title">{this.state.name}</h5>
                         <p className="card-text">{this.state.mass}</p>

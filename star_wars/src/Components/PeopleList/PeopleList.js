@@ -4,6 +4,7 @@ import PeopleItem from "../PeopleItem/PeopleItem";
 
 const PeopleList = ({ Data }) => {
   var contact;
+  // console.log("Data on list " + Data);
   if (Data != null) {
     contact = Data.map((item) => {
       return (
@@ -17,6 +18,7 @@ const PeopleList = ({ Data }) => {
           birth_year={item.birth_year}
           gender={item.gender}
           homeworld={item.homeworld}
+          url={item.url}
         ></PeopleItem>
       );
     });
@@ -24,7 +26,9 @@ const PeopleList = ({ Data }) => {
 
   return (
     <Fragment>
-      <div className="card-deck">{contact}</div>
+      <div className="container">
+        <div className="card-deck">{contact}</div>
+      </div>
     </Fragment>
   );
 };
