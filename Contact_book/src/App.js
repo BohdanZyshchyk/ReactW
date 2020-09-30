@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import "./App.css";
 import ContactList from "./Components/ContactList/ContactList";
+import FavContactList from "./Components/FavContactList/FavContactList";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import uuid from "react-uuid";
 
@@ -199,10 +200,10 @@ class App extends Component {
                 path="/favoriteContact"
                 exact
                 render={() => (
-                  <ContactList
+                  <FavContactList
                     DataContact={this.state.List}
                     changeFavorite={this.changeFavorite.bind(this)}
-                  ></ContactList>
+                  ></FavContactList>
                 )}
               ></Route>
 
