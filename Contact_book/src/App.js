@@ -8,41 +8,13 @@ import uuid from "react-uuid";
 import Page404 from "./Components/Page404/Page404";
 import AddContact from "./Components/AddContact/AddContact";
 import EditContact from "./Components/EditContact/EditContact";
+import SearchContactList from "./Components/SearchContactList/SearchContactList";
 
 class App extends Component {
   state = {
-    List: [
-      // {
-      //   id: 1,
-      //   name: "Andrii Riabii",
-      //   phone: "+380 (05) 41 66 765",
-      //   email: "cuanid236316@gmail.com",
-      //   address: "Soborna 16",
-      //   gender: "men",
-      //   avatar: 3,
-      //   isFavarite: false,
-      // },
-      // {
-      //   id: 2,
-      //   name: "Kate Yaroshik",
-      //   phone: "+380 (05) 23 11 885",
-      //   email: "kate@gmail.com",
-      //   address: "Soborna 35",
-      //   gender: "women",
-      //   avatar: 6,
-      //   isFavarite: false,
-      // },
-      // {
-      //   id: 3,
-      //   name: "Vlad Lemonov",
-      //   phone: "+380 (15) 11 11 222",
-      //   email: "vlad@gmail.com",
-      //   address: "Soborna 35",
-      //   gender: "men",
-      //   avatar: 1,
-      //   isFavarite: false,
-      // },
-    ],
+    List: [],
+    searchedList: [],
+    searchQuery: null,
     isCheck: false,
     currentContact: null,
   };
@@ -50,37 +22,39 @@ class App extends Component {
   URL = "https://contactbook-9f583.firebaseio.com/list.json"
 
   getContacts = () => {
-    fetch(this.URL, {method: "GET"})
-    .then(data => {
-      return data.json();
-    })
-    .then(contacts =>{
-      console.log(contacts);
-      this.setState({
-        List:contacts
+    fetch(this.URL, { method: "GET" })
+      .then(data => {
+        return data.json();
       })
-    })
-    .catch(error =>{
-      console.log("Error: ", error);
-    })
+      .then(contacts => {
+        console.log(contacts);
+        this.setState({
+          List: contacts
+        })
+      })
+      .catch(error => {
+        console.log("Error: ", error);
+      })
   }
-  componentDidMount(){
+  componentDidMount() {
     this.getContacts();
   }
 
-  saveChanges(listData){
-    fetch(this.URL, {method: "PUT",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(listData)})
-    .then(data => {
-      console.log(data)
+  saveChanges(listData) {
+    fetch(this.URL, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(listData)
     })
-    .catch(error => {
-      console.log(error)
-    })
+      .then(data => {
+        console.log(data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
   changeFavorite = (id) => {
@@ -100,7 +74,7 @@ class App extends Component {
       currentContact: currentContact,
     });
   };
-  saveContact = (obj) =>{
+  saveContact = (obj) => {
     const index = this.state.List.findIndex(x => x.id == obj.id);
     this.state.List[index] = obj;
     this.saveChanges(this.state.List);
@@ -144,7 +118,25 @@ class App extends Component {
       isCheck: true,
     });
   };
-  
+
+  setSearch = (event) =>{
+    this.setState({
+      searchQuery:event.target.value,
+    });
+  }
+
+  initSearch = () =>{
+    let searched = this.state.List.filter(item =>{
+      if(item.name == this.state.searchQuery || 
+        item.phone == this.state.searchQuery ||
+        item.email == this.state.searchQuery ||
+        item.address == this.state.searchQuery )
+        return item;
+    })
+    this.setState({
+      searchedList:searched,
+    });
+  }
 
   render() {
     return (
@@ -178,6 +170,10 @@ class App extends Component {
                     Add contact
                   </Link>
                 </div>
+                <form class="form-inline my-2 my-lg-0">
+                  <input class="form-control mr-sm-2" type="search" placeholder="Search" onChange={this.setSearch.bind(this)} aria-label="Search" />
+                  <Link class="btn btn-outline-success my-2 my-sm-0" to="/searchContact" onClick={this.initSearch.bind(this)} >Search</Link>
+                </form>
               </div>
             </nav>
 
@@ -208,6 +204,17 @@ class App extends Component {
               ></Route>
 
               <Route
+                path="/searchContact"
+                exact
+                render={() => (
+                  <SearchContactList
+                    DataContact={this.state.searchedList}
+                    changeFavorite={this.changeFavorite.bind(this)}
+                  ></SearchContactList>
+                )}
+              ></Route>
+
+              <Route
                 path="/addContact"
                 exact
                 render={() => (
@@ -220,7 +227,7 @@ class App extends Component {
                 exact
                 render={() => (
                   <EditContact currentContact={this.state.currentContact}
-                  saveContact={this.saveContact}></EditContact>
+                    saveContact={this.saveContact}></EditContact>
                 )}
               ></Route>
 
