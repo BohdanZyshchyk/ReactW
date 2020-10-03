@@ -9,11 +9,17 @@ import Page404 from "./Components/Page404/Page404";
 import AddContact from "./Components/AddContact/AddContact";
 import EditContact from "./Components/EditContact/EditContact";
 import SearchContactList from "./Components/SearchContactList/SearchContactList";
+import Groups from "./Components/Groups/Groups";
 
 class App extends Component {
   state = {
     List: [],
     searchedList: [],
+    groupsList: [
+      "Work",
+      "Study",
+      "Friends"
+    ],
     searchQuery: null,
     isCheck: false,
     currentContact: null,
@@ -169,6 +175,9 @@ class App extends Component {
                   <Link className="nav-item nav-link" to="/addContact">
                     Add contact
                   </Link>
+                  <Link className="nav-item nav-link" to="/groups">
+                    Groups
+                  </Link>
                 </div>
                 <form class="form-inline my-2 my-lg-0">
                   <input class="form-control mr-sm-2" type="search" placeholder="Search" onChange={this.setSearch.bind(this)} aria-label="Search" />
@@ -200,6 +209,16 @@ class App extends Component {
                     DataContact={this.state.List}
                     changeFavorite={this.changeFavorite.bind(this)}
                   ></FavContactList>
+                )}
+              ></Route>
+              <Route
+                path="/groups"
+                exact
+                render={() => (
+                  <Groups
+                    contacts={this.state.List}
+                    groups={this.state.groupsList}
+                  ></Groups>
                 )}
               ></Route>
 
