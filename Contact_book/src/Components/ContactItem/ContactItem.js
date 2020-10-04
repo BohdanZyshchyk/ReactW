@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import "./ContactItem.css";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import GroupList from "../GroupList/GroupList"
 
 class ContactItem extends Component {
 
@@ -18,21 +19,19 @@ class ContactItem extends Component {
 
     setRandomImage() {
         const randomAvatar = Math.floor(Math.random() * Math.floor(99));
-
         this.setState({
             avatar: randomAvatar
         });
     }
-
+    
     render() {
         const { name, email, avatar, address, phone, gender } = this.state;
         const URL_image = `https://randomuser.me/api/portraits/${gender}/${avatar}.jpg`;
-
+        
         var class_star = "fas fa-star fa-2x icon";
         if (this.props.isFavarite === false) {
             class_star = "far fa-star fa-2x icon";
         }
-
         return (
             <Fragment>
                 <div class="card">
@@ -47,9 +46,18 @@ class ContactItem extends Component {
                         <button className="btn btn-info" onClick={this.setRandomImage.bind(this)}>RANDOM IMAGE</button>
                         <i className={class_star} onClick={this.props.changeFavorite} ></i>
                         <i className="fas fa-trash-alt fa-2x trash" onClick={this.props.removeContact}></i>
-                        <Link  to="/editContact">
+                        <Link to="/editContact">
                             <i className="fas fa-edit fa-2x edit" onClick={this.props.editContact}></i>
                         </Link>
+                    </div>
+                    <div className="container">
+                        <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Group</button>
+                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <GroupList dataGroup={this.props.groups}
+                            contactId={this.props.contactId}
+                            setGroup={this.props.setGroup}></GroupList>
+                        </div>
                     </div>
                 </div>
             </Fragment >

@@ -7,6 +7,7 @@ import uuid from "react-uuid";
 
 import Page404 from "./Components/Page404/Page404";
 import AddContact from "./Components/AddContact/AddContact";
+import AddGroup from "./Components/AddGroup/AddGroup";
 import EditContact from "./Components/EditContact/EditContact";
 import SearchContactList from "./Components/SearchContactList/SearchContactList";
 import Groups from "./Components/Groups/Groups";
@@ -16,9 +17,18 @@ class App extends Component {
     List: [],
     searchedList: [],
     groupsList: [
-      "Work",
-      "Study",
-      "Friends"
+      {
+        name: "Work",
+        users: []
+      },
+      {
+        name: "Study",
+        users: []
+      },
+      {
+        name: "Friends",
+        users: []
+      }
     ],
     searchQuery: null,
     isCheck: false,
@@ -97,8 +107,6 @@ class App extends Component {
       isFavorite: false,
     };
 
-    console.log("NEW CONTACT ->", newContact);
-
     let tempList = [];
     if (this.state.List != null) {
       tempList = this.state.List.slice();
@@ -113,6 +121,30 @@ class App extends Component {
     });
   };
 
+  addGroup = (name) => {
+    const newGroup = {
+      name: name,
+      users: []
+    }
+    let tempList = [];
+    if (this.state.List != null) {
+      tempList = this.state.groupsList.slice();
+    }
+
+    tempList.push(newGroup);
+
+    this.setState((state) => {
+      return {
+        groupsList: tempList,
+      };
+    });
+
+  }
+  setGroup = (contactId, groupName) =>{
+    let contact = this.state.List.find(t => t.id == contactId);
+    let group = this.state.groupsList.find(t => t.name == groupName);
+    group.users.push(contact);
+  }
   removeContact = (id) => {
     const indexRemoveElement = this.state.List.findIndex(
       (item) => item.id === id
@@ -125,22 +157,22 @@ class App extends Component {
     });
   };
 
-  setSearch = (event) =>{
+  setSearch = (event) => {
     this.setState({
-      searchQuery:event.target.value,
+      searchQuery: event.target.value,
     });
   }
 
-  initSearch = () =>{
-    let searched = this.state.List.filter(item =>{
-      if(item.name == this.state.searchQuery || 
+  initSearch = () => {
+    let searched = this.state.List.filter(item => {
+      if (item.name == this.state.searchQuery ||
         item.phone == this.state.searchQuery ||
         item.email == this.state.searchQuery ||
-        item.address == this.state.searchQuery )
+        item.address == this.state.searchQuery)
         return item;
     })
     this.setState({
-      searchedList:searched,
+      searchedList: searched,
     });
   }
 
@@ -197,6 +229,8 @@ class App extends Component {
                     removeContact={this.removeContact.bind(this)}
                     editContact={this.editContact.bind(this)}
                     saveContact={this.saveContact.bind(this)}
+                    groups={this.state.groupsList}
+                    setGroup={this.setGroup.bind(this)}
                   ></ContactList>
                 )}
               ></Route>
@@ -219,6 +253,16 @@ class App extends Component {
                     contacts={this.state.List}
                     groups={this.state.groupsList}
                   ></Groups>
+                )}
+              ></Route>
+
+              <Route
+                path="/addGroup"
+                exact
+                render={() => (
+                  <AddGroup
+                    addGroup={this.addGroup}
+                  ></AddGroup>
                 )}
               ></Route>
 

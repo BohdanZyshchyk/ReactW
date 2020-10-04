@@ -4,20 +4,16 @@ import GroupItem from "../GroupItem/GroupItem";
 import {Link} from "react-router-dom";
 
 
-const Groups = ({ contacts, groups }) => {
-    let key = 1;
+const Groups = ({ groups }) => {
     const groupItems = groups.map((g) => {
-    let contactItems = contacts.filter((c) => {
-        return c.group === g;
-    });
-    return <GroupItem key={key++} groupName={g} contacts={contactItems} />
+        console.log(g.users);
+    return <GroupItem groupName={g.name} contacts={g.users} />
 })
     return (
         <Fragment>
             <div className="container">
                 <Link to="addGroup" className="btn btn-primary">Add group</Link>
-                <Link to="listGroups" className="btn btn-primary">List groups</Link>
-                <hr className="my-4"></hr>
+                <hr></hr>
                 {groupItems}
             </div>
         </Fragment>
