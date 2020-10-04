@@ -13,6 +13,10 @@ import SearchContactList from "./Components/SearchContactList/SearchContactList"
 import Groups from "./Components/Groups/Groups";
 
 class App extends Component {
+  constructor(){
+    super();
+    this.removeContact = this.removeContact.bind(this)
+  }
   state = {
     List: [],
     searchedList: [],
@@ -143,7 +147,27 @@ class App extends Component {
   setGroup = (contactId, groupName) =>{
     let contact = this.state.List.find(t => t.id == contactId);
     let group = this.state.groupsList.find(t => t.name == groupName);
-    group.users.push(contact);
+    if(group.users.indexOf(contact) < 0)
+    {
+      group.users.push(contact);
+    }
+
+    console.log(group)
+    console.log(this.state.groupsList)
+  }
+
+  removeGroup = (name) =>{
+    const indexRemoveElement = this.state.groupsList.findIndex(
+      (item) => item.name === name
+    );
+    let users = this.state.groupsList[indexRemoveElement].users;
+    for (let i = 0; i < users.length; i++) {
+      this.removeContact(users[i].id)
+    }
+    this.state.groupsList.splice(indexRemoveElement, 1);
+    this.setState({
+      isCheck: true,
+    });
   }
   removeContact = (id) => {
     const indexRemoveElement = this.state.List.findIndex(
@@ -252,6 +276,7 @@ class App extends Component {
                   <Groups
                     contacts={this.state.List}
                     groups={this.state.groupsList}
+                    removeGroup={this.removeGroup.bind(this)}
                   ></Groups>
                 )}
               ></Route>

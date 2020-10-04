@@ -4,10 +4,10 @@ import GroupItem from "../GroupItem/GroupItem";
 import {Link} from "react-router-dom";
 
 
-const Groups = ({ groups }) => {
+const Groups = ({ groups, removeGroup }) => {
     const groupItems = groups.map((g) => {
         console.log(g.users);
-    return <GroupItem groupName={g.name} contacts={g.users} />
+    return <GroupItem groupName={g.name} contacts={g.users} removeGroup={() => removeGroup(g.name)} />
 })
     return (
         <Fragment>

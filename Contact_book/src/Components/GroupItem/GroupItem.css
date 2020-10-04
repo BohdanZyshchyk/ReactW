@@ -6,12 +6,11 @@
     color: rgb(158, 41, 41);
 }
 
-i {
-    margin:10px;
-    margin-top: 20px;
-    cursor: pointer;
-}
 
 .edit{
     color: green;
+}
+
+.my-container{
+    overflow: hidden;
 }
