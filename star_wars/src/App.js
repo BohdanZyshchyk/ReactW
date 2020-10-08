@@ -37,8 +37,8 @@ class App extends Component {
     return dataAll;
   };
 
-  getPeople = async () => {
-    let data = await this.getData(this.peopleURl);
+  getPeople = async (dataURL = this.peopleURl) => {
+    let data = await this.getData(dataURL);
 
     this.setState({
       pagePeople: data.count,
@@ -46,8 +46,8 @@ class App extends Component {
     });
   };
 
-  getPlanets = async () => {
-    let data = await this.getData(this.planetURL);
+  getPlanets = async (dataURL = this.planetURL) => {
+    let data = await this.getData(dataURL);
     console.log("data get planet " + data);
     let count = data.count / data.results.length;
     this.setState({
@@ -56,14 +56,23 @@ class App extends Component {
     });
   };
 
-  getFilms = async () => {
-    let data = await this.getData(this.filmURL);
+  getFilms = async (dataURL = this.filmURL) => {
+    let data = await this.getData(dataURL);
     console.log("data get film " + data);
     this.setState({
       pageFilms: data.count,
       Films: data.results,
     });
   };
+
+  onPageChange = (e) =>{
+    let page = e.selected+1
+    let dataurl = "https://swapi.dev/api/planets/?page=" +page;
+    console.log(dataurl);
+    this.getPlanets(dataurl);
+    console.log("Planets");
+    console.log(this.state.Planets);
+  }
 
   componentDidMount() {
     this.getPeople();
@@ -124,7 +133,8 @@ class App extends Component {
                     previousLabel={"previous"}
                     nextLabel={"next"}
                     breakLabel={"..."}
-                    breakClassName={"break-me"}
+                    breakClassName={"break-me"}ї
+                    onPageChange={this.onPageChange}
                     pageCount={this.state.pagePlanets}
                     marginPagesDisplayed={2}
                     pageRangeDisplayed={5}
