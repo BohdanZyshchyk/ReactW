@@ -29,7 +29,7 @@ class Film extends Component {
   render() {
     return (
       <Fragment>
-        <div class="card">
+        <div className="card">
           <img className="card-img-top" src= {this.state.id} alt="Card image cap" />
           <div className="card-body">
             <h5 className="card-title">{this.state.title}</h5>

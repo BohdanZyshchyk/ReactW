@@ -32,7 +32,7 @@ class PeopleItem extends Component {
     render () {
         return (
             <Fragment>
-                 <div class="card-3">
+                 <div className="card-3">
                     <img className="card-img-top" src={this.state.id} alt="Card image cap" />
                     <div className="card-body">
                         <h5 className="card-title">{this.state.name}</h5>
