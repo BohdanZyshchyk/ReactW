@@ -47,6 +47,8 @@ class App extends Component {
   };
 
   getPlanets = async (dataURL = this.planetURL) => {
+    console.log("URELE");
+    console.log(dataURL);
     let data = await this.getData(dataURL);
     console.log("data get planet " + data);
     let count = data.count / data.results.length;
@@ -65,13 +67,40 @@ class App extends Component {
     });
   };
 
-  onPageChange = (e) =>{
+  onPagePlanetChange = (e) =>{
     let page = e.selected+1
     let dataurl = "https://swapi.dev/api/planets/?page=" +page;
     console.log(dataurl);
     this.getPlanets(dataurl);
-    console.log("Planets");
-    console.log(this.state.Planets);
+    let tmp =[];
+    console.log(tmp);
+    this.setState({
+      Planets:tmp
+    })
+  }
+
+  onPagePeopleChange = (e) =>{
+    let page = e.selected+1
+    let dataurl = "https://swapi.dev/api/planets/?page=" +page;
+    console.log(dataurl);
+    this.getPlanets(dataurl);
+    let tmp =[];
+    console.log(tmp);
+    this.setState({
+      Planets:tmp
+    })
+  }
+
+  onPageFilmsChange = (e) =>{
+    let page = e.selected+1
+    let dataurl = "https://swapi.dev/api/planets/?page=" +page;
+    console.log(dataurl);
+    this.getPlanets(dataurl);
+    let tmp =[];
+    console.log(tmp);
+    this.setState({
+      Planets:tmp
+    })
   }
 
   componentDidMount() {
@@ -128,7 +157,6 @@ class App extends Component {
               render={() => (
                 <Fragment>
                   <PlanetsList Data={this.state.Planets}></PlanetsList>
-                   
                   <ReactPaginate
                     previousLabel={"previous"}
                     nextLabel={"next"}
@@ -141,6 +169,7 @@ class App extends Component {
                     containerClassName={"pagination"}
                     subContainerClassName={"pages pagination"}
                     activeClassName={"active"}
+
                   />
                 </Fragment>
               )}

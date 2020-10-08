@@ -6,7 +6,9 @@ const PlanetsList = ({ Data }) => {
   var contact;
   // console.log("Data on list " + Data);
   if (Data != null) {
+    console.log("Items")
     contact = Data.map((item) => {
+      console.log(item);
       return (
         <Planet
           name={item.name}
