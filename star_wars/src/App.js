@@ -67,39 +67,39 @@ class App extends Component {
     });
   };
 
-  onPagePlanetChange = (e) =>{
-    let page = e.selected+1
-    let dataurl = "https://swapi.dev/api/planets/?page=" +page;
+  onPagePlanetChange = (e) => {
+    let page = e.selected + 1
+    let dataurl = "https://swapi.dev/api/planets/?page=" + page;
     console.log(dataurl);
     this.getPlanets(dataurl);
-    let tmp =[];
+    let tmp = [];
     console.log(tmp);
     this.setState({
-      Planets:tmp
+      Planets: tmp
     })
   }
 
-  onPagePeopleChange = (e) =>{
-    let page = e.selected+1
-    let dataurl = "https://swapi.dev/api/planets/?page=" +page;
+  onPagePeopleChange = (e) => {
+    let page = e.selected + 1
+    let dataurl = "https://swapi.dev/api/people/?page=" + page;
     console.log(dataurl);
-    this.getPlanets(dataurl);
-    let tmp =[];
+    this.getFilms(dataurl);
+    let tmp = [];
     console.log(tmp);
     this.setState({
-      Planets:tmp
+      People: tmp
     })
   }
 
-  onPageFilmsChange = (e) =>{
-    let page = e.selected+1
-    let dataurl = "https://swapi.dev/api/planets/?page=" +page;
+  onPageFilmsChange = (e) => {
+    let page = e.selected + 1
+    let dataurl = "https://swapi.dev/api/films/?page=" + page;
     console.log(dataurl);
-    this.getPlanets(dataurl);
-    let tmp =[];
+    this.getFilms(dataurl);
+    let tmp = [];
     console.log(tmp);
     this.setState({
-      Planets:tmp
+      Films: tmp
     })
   }
 
@@ -149,7 +149,24 @@ class App extends Component {
             <Route
               path="/"
               exact
-              render={() => <PeopleList Data={this.state.People}></PeopleList>}
+              render={() =>
+                <Fragment>
+                  <PeopleList Data={this.state.People}></PeopleList>
+                  <ReactPaginate
+                    previousLabel={"previous"}
+                    nextLabel={"next"}
+                    breakLabel={"..."}
+                    breakClassName={"break-me"} ї
+                    onPageChange={this.onPagePeopleChange}
+                    pageCount={this.state.pagePeople}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={2}
+                    containerClassName={"pagination"}
+                    subContainerClassName={"pages pagination"}
+                    activeClassName={"active"}
+
+                  />
+                </Fragment>}
             ></Route>
             <Route
               path="/planets"
@@ -161,11 +178,11 @@ class App extends Component {
                     previousLabel={"previous"}
                     nextLabel={"next"}
                     breakLabel={"..."}
-                    breakClassName={"break-me"}ї
-                    onPageChange={this.onPageChange}
+                    breakClassName={"break-me"} ї
+                    onPageChange={this.onPagePlanetChange}
                     pageCount={this.state.pagePlanets}
                     marginPagesDisplayed={2}
-                    pageRangeDisplayed={5}
+                    pageRangeDisplayed={2}
                     containerClassName={"pagination"}
                     subContainerClassName={"pages pagination"}
                     activeClassName={"active"}
@@ -177,7 +194,25 @@ class App extends Component {
             <Route
               path="/films"
               exact
-              render={() => <FilmList Data={this.state.Films}></FilmList>}
+              render={() =>
+                <Fragment>
+                  <FilmList Data={this.state.Films}></FilmList>
+                  <ReactPaginate
+                    previousLabel={"previous"}
+                    nextLabel={"next"}
+                    breakLabel={"..."}
+                    breakClassName={"break-me"} ї
+                    onPageChange={this.onPageFilmsChange}
+                    pageCount={this.state.pageFilms}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={2}
+                    containerClassName={"pagination"}
+                    subContainerClassName={"pages pagination"}
+                    activeClassName={"active"}
+
+                  />
+                </Fragment>
+              }
             ></Route>
           </Switch>
         </Router>
