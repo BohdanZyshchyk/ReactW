@@ -70,10 +70,8 @@ class App extends Component {
   onPagePlanetChange = (e) => {
     let page = e.selected + 1
     let dataurl = "https://swapi.dev/api/planets/?page=" + page;
-    console.log(dataurl);
     this.getPlanets(dataurl);
     let tmp = [];
-    console.log(tmp);
     this.setState({
       Planets: tmp
     })
@@ -82,10 +80,8 @@ class App extends Component {
   onPagePeopleChange = (e) => {
     let page = e.selected + 1
     let dataurl = "https://swapi.dev/api/people/?page=" + page;
-    console.log(dataurl);
-    this.getFilms(dataurl);
+    this.getPeople(dataurl);
     let tmp = [];
-    console.log(tmp);
     this.setState({
       People: tmp
     })
@@ -141,6 +137,10 @@ class App extends Component {
                     Films
                   </Link>
                 </div>
+                <form class="form-inline my-2 my-lg-0">
+                  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
+                  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
               </div>
             </nav>
           </div>
@@ -152,20 +152,22 @@ class App extends Component {
               render={() =>
                 <Fragment>
                   <PeopleList Data={this.state.People}></PeopleList>
-                  <ReactPaginate
-                    previousLabel={"previous"}
-                    nextLabel={"next"}
-                    breakLabel={"..."}
-                    breakClassName={"break-me"} ї
-                    onPageChange={this.onPagePeopleChange}
-                    pageCount={this.state.pagePeople}
-                    marginPagesDisplayed={2}
-                    pageRangeDisplayed={2}
-                    containerClassName={"pagination"}
-                    subContainerClassName={"pages pagination"}
-                    activeClassName={"active"}
+                  <div className="container text-center">
+                    <ReactPaginate
+                      previousLabel={"previous"}
+                      nextLabel={"next"}
+                      breakLabel={"..."}
+                      breakClassName={"break-me"} ї
+                      onPageChange={this.onPagePeopleChange}
+                      pageCount={this.state.pagePeople}
+                      marginPagesDisplayed={2}
+                      pageRangeDisplayed={2}
+                      containerClassName={"pagination"}
+                      subContainerClassName={"pages pagination"}
+                      activeClassName={"active"}
 
-                  />
+                    />
+                  </div>
                 </Fragment>}
             ></Route>
             <Route

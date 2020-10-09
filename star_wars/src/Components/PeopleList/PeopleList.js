@@ -26,8 +26,10 @@ const PeopleList = ({ Data }) => {
 
   return (
     <Fragment>
+      <div className="container-fluid">
       <div className="container">
-        <div className="card-deck">{contact}</div>
+        <div className="row">{contact}</div>
+      </div>
       </div>
     </Fragment>
   );
